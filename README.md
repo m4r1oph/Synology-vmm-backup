@@ -3,7 +3,8 @@ Script for automate the export of VM's in Synology\
 \
 HOW TO TO RUN:\
 \
-You have to create a scheduled task in control panel, select the option user defined script, give him root permisions and put --> bash /route/to/your/script\
+You have to create a scheduled task in control panel, select the option user defined script, give him root permisions and put: \
+--> bash /route/to/your/script\
 \
 TASKS PERFORMED IN ORDER:\
 \
