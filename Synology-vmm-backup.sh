@@ -15,7 +15,7 @@ if [[ $num_backups -gt 3 ]]
             then
                 num_delete=$(($num_old+1))
                 cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/fich.txt | head -n $num_old | cut -d " " -f 2 > /ROUTE/TO/THE/DESTINATION/FOLDER/logs/del_old.txt
-                num_lin=$(cat /volume1/Backup/Windows2016/logs/del_old.txt | wc -l )
+                num_lin=$(cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/del_old.txt | wc -l )
                 for i in $(seq 1 $num_lin)
                     do
                         delete=$(cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/del_old.txt | sed -n $i'p')
