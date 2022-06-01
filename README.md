@@ -1,5 +1,5 @@
 # Synology-vmm-backup
-Script for automate the export of VM's in Synology
+Script for automate the export of VM's in Synology\
 \
 HOW TO TO RUN:\
 \
