@@ -4,7 +4,7 @@ Script for automate the export of VM's in Synology\
 \
 PUT CORRECT PARAMETERS:\
 \
-You have to modify some parameters for the script to be really functional.  go to the script file and search all the lines that say this: /ROUTE/TO/THE/DESTINATION/FOLDER\
+You have to modify some parameters for the script to be really functional.  go to the script file and search all the lines that say this: '/ROUTE/TO/THE/DESTINATION/FOLDER\'
 There you have to put where all of your backups will go, it has to be a shared folder and the route looks like this: /volume1/shared_folder/NAME_OF_VM
 \
 \
