@@ -28,4 +28,3 @@ NOTES:\
 There's no need to shutdown the VM before the export, but in my case I want to keep consistency on the Backups avoiding potential errors.\
 You can edit the number of copies that you want to keep.\
 \
-\
