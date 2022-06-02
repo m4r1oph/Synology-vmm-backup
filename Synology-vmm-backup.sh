@@ -29,6 +29,6 @@ if [[ $num_backups -gt 3 ]]
 fi
 
 hyper_backup=$(find /ROUTE/TO/THE/DESTINATION/FOLDER/ -maxdepth 1 -type f -printf '%T+ %p\n' | sort | tail -n 1 | cut -d " " -f 2)
-cp $hyper_backup /volume1/Backup/Windows2016/Hyper_Backup/WS2016.ova
+cp $hyper_backup /ROUTE/TO/THE/HYPERBACKUP/FOLDER/WS2016.ova
 
 synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=poweron runner=admin guest_name="NAME_OF_VM"
