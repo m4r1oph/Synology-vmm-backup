@@ -30,10 +30,7 @@ If you want to shutodow just comment/delete this two lines.
 synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=shutdown runner=admin guest_name="NAME_OF_VM"
 synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=poweron runner=admin guest_name="NAME_OF_VM"
 ```
-- You can edit the number of copies that you want to keep. You have to go to this piece of code
+- You can edit the number of copies that you want to keep. You have to go to this piece of code and change the value 3 to the number of backups that you want to keep.
 ```
 num_old=$(($num_lin-3))
 ```
-And change the value 3 to the number of backups that you want to keep.
-
-
