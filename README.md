@@ -6,22 +6,22 @@ PUT CORRECT PARAMETERS:
 1. You have to modify some parameters for the script to be really functional. 
   - Search all the lines that contains this: `/ROUTE/TO/THE/DESTINATION/FOLDER`
   - Then replace that line with your path, it has to be a shared folder and the route looks like this: `/volume1/shared_folder/NAME_OF_VM`
-\
+
 \
 HOW TO TO RUN:\
 \
-You have to create a scheduled task in control panel, select the option user defined script, give him root permisions and put: \
-bash /route/to/your/script\
+  You have to create a scheduled task in control panel, select the option user defined script, give him root permisions and put:\
+  `bash /route/to/your/script`
 \
 \
-TASKS PERFORMED IN ORDER:\
-\
-1.-Shutdowns the VM\
-2.-Start the backup\
-3.-Check the number of existing backups, if it exceeds 3, delete the oldest ones and keep the last 3.\
-4.-Copies the last one to another folder, thats useful if you want to create a Hyper Backup task to export this other storage device.\
-5.-Starts the VM again.\
-\
+TASKS PERFORMED IN ORDER:
+
+1. Shutdowns the VM
+2. Start the backup
+3. Check the number of existing backups, if it exceeds 3, delete the oldest ones and keep the last 3.
+4. Copies the last one to another folder, thats useful if you want to create a Hyper Backup task to export this other storage device.
+5. Starts the VM again.
+
 \
 NOTES:\
 \
