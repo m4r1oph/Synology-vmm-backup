@@ -4,11 +4,12 @@ synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=shut
 sleep 15m
 
 /var/packages/Virtualization/target/bin/vmm_backup_ova --dst=Backup --batch=1 --guests="NAME_OF_VM"
-num_backups=$(find /ROUTE/TO/THE/DESTINATION/FOLDER/ -maxdepth 1 -type f | wc -l)
+mv $(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f ! -name '.*' ! -name 'NAME_OF_VM*') /ROUTE/TO/THE/DESTINATION/FOLDER/NoBackups
+num_backups=$(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f ! -name '.*' | wc -l)
 if [[ $num_backups -gt 3 ]]
     then
         mkdir /ROUTE/TO/THE/DESTINATION/FOLDER/logs
-        backup_old=$(find /ROUTE/TO/THE/DESTINATION/FOLDER/ -maxdepth 1 -type f -printf '%T+ %p\n' | sort > /ROUTE/TO/THE/DESTINATION/FOLDER/logs/fich.txt)
+        backup_old=$(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f -printf '%T+ %p\n' | sort > /ROUTE/TO/THE/DESTINATION/FOLDER/logs/fich.txt)
         num_lin=$(cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/fich.txt | wc -l )
         num_old=$(($num_lin-3))
         if [[ $num_old -gt 0 ]]
@@ -20,15 +21,12 @@ if [[ $num_backups -gt 3 ]]
                     do
                         delete=$(cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/del_old.txt | sed -n $i'p')
                         rm $delete
-                    done
-            else
-                backup_old=$(find /ROUTE/TO/THE/DESTINATION/FOLDER/ -maxdepth 1 -type f -printf '%T+ %p\n' | sort | head -n 1 | cut -d " " -f 2)
-                rm $backup_old
-            fi
-            rm -r /ROUTE/TO/THE/DESTINATION/FOLDER/logs
+                done
+        fi
+        rm -r /ROUTE/TO/THE/DESTINATION/FOLDER/logs
 fi
 
-hyper_backup=$(find /ROUTE/TO/THE/DESTINATION/FOLDER/ -maxdepth 1 -type f -printf '%T+ %p\n' | sort | tail -n 1 | cut -d " " -f 2)
-cp $hyper_backup /ROUTE/TO/THE/HYPERBACKUP/FOLDER/WS2016.ova
+hyper_backup=$(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f -printf '%T+ %p\n' | sort | tail -n 1 | cut -d " " -f 2)
+cp $hyper_backup /ROUTE/TO/THE/DESTINATION/FOLDER/HyperBackup/WS.ova
 
 synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=poweron runner=admin guest_name="NAME_OF_VM"
