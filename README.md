@@ -5,7 +5,10 @@ Script for automate the export of VM's in Synology
 > You have to modify some parameters for the script to be really functional.
   - Search all the lines that contains this: `/ROUTE/TO/THE/DESTINATION/FOLDER`
   - Then replace that line with your path, it has to be a shared folder and the route looks like this: `/volume1/shared_folder/NAME_OF_VM`
-
+  - Change the shared folder that the backup is going, the parameter is **--dst**, inside this folder you have to create a folder with the *SAME* name as the VM
+  ```
+  /var/packages/Virtualization/target/bin/vmm_backup_ova --dst=Backup --batch=1 --guests="NAME_OF_VM"
+  ```
 \
 ***HOW TO TO RUN:***
 \
