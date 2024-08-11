@@ -1,32 +1,30 @@
 #!/bin/bash
 
-synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=shutdown runner=admin guest_name="NAME_OF_VM"
-sleep 15m
+# Original proposal available on https://github.com/m4r1oph/Synology-vmm-backup/
+# Define variables for paths and VM name
+# Use pipe caracter for multi VM
+VM_NAME="VM-Test|VM-Test-1"
+VOLUME="/volume1"
+SHARED_FOLDER="Backup"
+NUMBER_BACKUPS=3
 
-/var/packages/Virtualization/target/bin/vmm_backup_ova --dst=Backup --batch=1 --guests="NAME_OF_VM"
-mv $(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f ! -name '.*' ! -name 'NAME_OF_VM*') /ROUTE/TO/THE/DESTINATION/FOLDER/NoBackups
-num_backups=$(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f ! -name '.*' | wc -l)
-if [[ $num_backups -gt 3 ]]
-    then
-        mkdir /ROUTE/TO/THE/DESTINATION/FOLDER/logs
-        backup_old=$(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f -printf '%T+ %p\n' | sort > /ROUTE/TO/THE/DESTINATION/FOLDER/logs/fich.txt)
-        num_lin=$(cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/fich.txt | wc -l )
-        num_old=$(($num_lin-3))
-        if [[ $num_old -gt 0 ]]
-            then
-                num_delete=$(($num_old+1))
-                cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/fich.txt | head -n $num_old | cut -d " " -f 2 > /ROUTE/TO/THE/DESTINATION/FOLDER/logs/del_old.txt
-                num_lin=$(cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/del_old.txt | wc -l )
-                for i in $(seq 1 $num_lin)
-                    do
-                        delete=$(cat /ROUTE/TO/THE/DESTINATION/FOLDER/logs/del_old.txt | sed -n $i'p')
-                        rm $delete
-                done
-        fi
-        rm -r /ROUTE/TO/THE/DESTINATION/FOLDER/logs
-fi
 
-hyper_backup=$(find /ROUTE/TO/THE/DESTINATION/FOLDER -maxdepth 1 -type f -printf '%T+ %p\n' | sort | tail -n 1 | cut -d " " -f 2)
-cp $hyper_backup /ROUTE/TO/THE/DESTINATION/FOLDER/HyperBackup/WS.ova
 
-synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=poweron runner=admin guest_name="NAME_OF_VM"
+# Shutdown the virtual machine
+VM=$(echo $VM_NAME | tr "|" "\n")
+for vm in $VM
+do
+    synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=shutdown runner=admin guest_name="$vm"
+    sleep 15s
+done
+
+
+# Backup the virtual machine
+/var/packages/Virtualization/target/bin/vmm_backup_ova --dst=$SHARED_FOLDER --batch=1 --guests="$VM_NAME" --retent=$NUMBER_BACKUPS
+
+
+# Power on the virtual machine
+for vm in $VM
+do
+    synowebapi --exec api=SYNO.Virtualization.API.Guest.Action version=1 method=poweron runner=admin guest_name="$vm"
+done
